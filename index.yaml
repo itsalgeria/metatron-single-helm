@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  metatron-single:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2019-08-05T12:10:12.129137-04:00"
+    description: A Helm chart for single node of Metatron Discovery
+    digest: 8353003557945ec8b2486dab2687e36c68ef2eb0e21d651ff33df389614d7dc8
+    name: metatron-single
+    urls:
+    - https://rsecob.github.io/metatron-single-helm/metatron-single-0.1.0.tgz
+    version: 0.1.0
+generated: "2019-08-05T12:10:12.124088-04:00"
