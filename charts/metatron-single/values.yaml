@@ -37,7 +37,7 @@ druid:
   
   service:
     type: ClusterIP
-  
+
 ingress:
   enabled: false
   annotations: {}
