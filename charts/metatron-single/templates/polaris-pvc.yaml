@@ -14,4 +14,8 @@ spec:
   resources:
     requests:
       storage: 1Gi
-      
+{{- if (eq "-" .Values.polaris.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.polaris.persistence.storageClass }}"
+{{- end }}
