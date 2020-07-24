@@ -10,7 +10,7 @@ data:
       /app/metatron-discovery/bin/metatron.sh start
     else
       echo "Discovery has no backup, starting initialization"
-      /app/metatron-discovery/bin/metatron.sh --init start
+      /app/metatron-discovery/bin/metatron.sh start
     fi;
     while (/app/metatron-discovery/bin/metatron.sh status >/dev/null); do
       sleep 30
