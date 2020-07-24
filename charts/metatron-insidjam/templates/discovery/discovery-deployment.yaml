@@ -20,6 +20,7 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "metatron-single.name" . }}-{{ .Values.discovery.name }}-config
+            defaultMode: 0777
       {{- if and .Values.discovery.persistence.enabled }}
         - name: h2-backup
           persistentVolumeClaim:
@@ -51,7 +52,7 @@ spec:
             mountPath: /app/h2_backup
         {{- end }}
           command: ["/bin/sh", "-c"]
-          args:  ["chmod +x /etc/config/run.sh &&  /etc/config/run.sh"]
+          args:  ["/etc/config/run.sh"]
           ports:
             - name: http
               containerPort: 8180
