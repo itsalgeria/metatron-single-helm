@@ -50,7 +50,9 @@ spec:
           - name: h2-backup
             mountPath: /app/h2_backup
         {{- end }}
-          command: ["sh", "/etc/config/run.sh"]
+          command:  command: ["/bin/sh", "-c"]
+          args:
+            - chmod +x /etc/config/run.sh &&  /etc/config/run.sh
           ports:
             - name: http
               containerPort: 8180
