@@ -50,7 +50,11 @@ spec:
           - name: h2-backup
             mountPath: /app/h2_backup
         {{- end }}
+<<<<<<< HEAD
           command: ["/bin/sh", "-c"]
+=======
+          command:  command: ["/bin/sh", "-c"]
+>>>>>>> 5cf1a7d5fe7d93c32e755016c806db990a8bdecd
           args:
             - chmod +x /etc/config/run.sh &&  /etc/config/run.sh
           ports:
