@@ -34,10 +34,47 @@ spec:
           image: "{{ .Values.discovery.image }}:{{ .Values.discovery.tag }}"
           imagePullPolicy: {{ .Values.discovery.imagePullPolicy }}
           env:
+        {{- if .Values.internalDatabase.enabled }}
           - name: METATRON_DB_TYPE
             value: h2
           - name: METATRON_H2_DATA_DIR
             value: /app/h2_backup
+        {{- else if .Values.mariadb.enabled }}
+          - name: METATRON_DB_TYPE
+            value: mysql
+          - name: MYSQL_HOST
+            value: {{ template "nextcloud.mariadb.fullname" . }}
+          - name: MYSQL_DATABASE
+            value: {{ .Values.mariadb.db.name | quote }}
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
+                key: {{ .Values.externalDatabase.existingSecret.usernameKey | default "db-username" }}
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
+                key: {{ .Values.externalDatabase.existingSecret.passwordKey | default "db-password" }}
+          {{- else }}
+          - name: METATRON_DB_TYPE
+            value: mysql          
+          - name: MYSQL_HOST
+            value: {{ .Values.externalDatabase.host | quote }}
+          - name: MYSQL_DATABASE
+            value: {{ .Values.externalDatabase.database | quote }}
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
+                key: {{ .Values.externalDatabase.existingSecret.usernameKey | default "db-username" }}
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
+                key: {{ .Values.externalDatabase.existingSecret.passwordKey | default "db-password" }}
+        {{- end }}  
+
           - name: METATRON_POLARIS_HOSTNAME
             value: {{ include "metatron-single.name" . }}-{{ .Values.druid.name }}.{{ .Release.Namespace }}.svc
           - name: METATRON_INGESTED_FOLER

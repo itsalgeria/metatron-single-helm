@@ -4,7 +4,7 @@
 
 discovery:
   name: discovery
-  image: bocesr/metatron-discovery
+  image: itsalgeria/metatron-discovery
   tag: latest
   imagePullPolicy: IfNotPresent
 
@@ -20,9 +20,9 @@ discovery:
     accessMode: ReadWriteOnce
     size: 5Gi
 
-druid:
-  name: druid
-  image: bocesr/metatron-druid
+geoserver:
+  name: geoserver
+  image: itsalgeria/metatron-geoserver
   tag: latest
   imagePullPolicy: IfNotPresent
 
@@ -37,6 +37,78 @@ druid:
   
   service:
     type: ClusterIP
+
+
+druid:
+  name: druid
+  image: itsalgeria/metatron-druid
+  tag: latest
+  imagePullPolicy: IfNotPresent
+
+  resources: {}
+  affinity: {}
+  tolerations: {}
+
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 5Gi
+  
+  service:
+    type: ClusterIP
+
+internalDatabase:
+  enabled: true
+  name: polaris_v2
+
+##
+## External database configuration
+##
+externalDatabase:
+  enabled: false
+
+  ## Supported database engines: mysql or postgresql
+  type: mysql
+
+  ## Database host
+  host:
+
+  ## Database user
+  user: polaris
+
+  ## Database password
+  password: insidjambi
+
+  ## Database name
+  database: polaris
+
+  ## Use a existing secret
+  existingSecret:
+    enabled: false
+    # secretName: nameofsecret
+    # usernameKey: username
+    # passwordKey: password
+
+##
+## MariaDB chart configuration
+##
+mariadb:
+  ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
+  enabled: false
+
+  db:
+    name: polaris
+    user: polaris
+    password: insidjambi
+
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  persistence:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 8Gi
+
 
 ingress:
   enabled: false
